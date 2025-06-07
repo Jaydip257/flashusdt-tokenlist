@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flash USDT Sender Panel</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
+</head>
+<body style="text-align:center; font-family:sans-serif; margin-top:60px;">
+
+  <h2>🚀 Send Flash USDT (Testnet)</h2>
+
+  <input id="receiver" type="text" placeholder="Receiver Wallet Address" style="width:300px; padding:10px;"><br><br>
+  <input id="amount" type="number" placeholder="Amount (USDT)" style="width:300px; padding:10px;"><br><br>
+  <button onclick="sendToken()" style="padding:10px 20px; font-size:16px;">Send Flash USDT</button>
+
+  <p id="status" style="margin-top:20px;"></p>
+
+  <script>
+    const tokenAddress = "0x04ff9be71Fa0fb120E2BF1E34F85B61d1a7575aC";
+    const tokenABI = [
+      {
+        "constant": false,
+        "inputs": [
+          { "name": "_to", "type": "address" },
+          { "name": "_value", "type": "uint256" }
+        ],
+        "name": "transfer",
+        "outputs": [{ "name": "", "type": "bool" }],
+        "type": "function"
+      }
+    ];
+
+    async function sendToken() {
+      if (typeof window.ethereum === "undefined") {
+        alert("MetaMask not found!");
+        return;
+      }
+
+      const web3 = new Web3(window.ethereum);
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+      const accounts = await web3.eth.getAccounts();
+      const sender = accounts[0];
+      const receiver = document.getElementById("receiver").value;
+      const amount = document.getElementById("amount").value;
+      const token = new web3.eth.Contract(tokenABI, tokenAddress);
+
+      const decimals = 6;
+      const finalAmount = web3.utils.toBN(amount * (10 ** decimals));
+
+      document.getElementById("status").innerText = "Sending...";
+
+      try {
+        await token.methods.transfer(receiver, finalAmount).send({ from: sender });
+
+        document.getElementById("status").innerText = "✅ Sent! Asking wallet to import token...";
+
+        await window.ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address: tokenAddress,
+              symbol: 'USDT',
+              decimals: decimals,
+              image: 'https://jaydip257.github.io/flashusdt-tokenlist/assets/tether-usdt-logo.png',
+            },
+          },
+        });
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").innerText = "❌ Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
