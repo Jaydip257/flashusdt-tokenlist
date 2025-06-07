@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flash USDT Auto Import</title>
+  </head>
+  <body style="font-family:sans-serif; text-align:center; margin-top:100px;">
+    <h2>🔥 Add Flash USDT Instantly</h2>
+    <p>Click below to auto-import Flash USDT to your wallet</p>
+    <button onclick="addFlashUSDT()" style="padding:10px 20px; font-size:16px;">Add Flash USDT</button>
+
+    <script>
+      async function addFlashUSDT() {
+        try {
+          const wasAdded = await window.ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC20',
+              options: {
+                address: '0x04ff9be71Fa0fb120E2BF1E34F85B61d1a7575aC',
+                symbol: 'USDT',
+                decimals: 6,
+                image: 'https://jaydip257.github.io/flashusdt-tokenlist/assets/tether-usdt-logo.png',
+              },
+            },
+          });
+
+          if (wasAdded) {
+            alert('Flash USDT successfully added to your wallet!');
+          } else {
+            alert('Import rejected.');
+          }
+        } catch (error) {
+          console.log(error);
+          alert('Something went wrong!');
+        }
+      }
+    </script>
+  </body>
+</html>
