@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Add Flash USDT</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.8.2/dist/web3.min.js"></script>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    button {
+      background-color: #1a73e8;
+      border: none;
+      padding: 14px 28px;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0c5cd3;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌟 Auto Add Flash USDT (F.USDT)</h1>
+  <p>Click below to automatically add Flash USDT to your wallet (MetaMask)</p>
+  <button onclick="addToken()">Add Flash USDT</button>
+
+  <script>
+    async function addToken() {
+      const tokenAddress = '0x1Be0becCE9Ef9De8d3Bef3B1952cEf8DFC208E37';
+      const tokenSymbol = 'USDT';
+      const tokenDecimals = 6;
+      const tokenImage = 'https://jaydip257.github.io/flashusdt-tokenlist/assets/usdt.png';
+
+      try {
+        const wasAdded = await window.ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address: tokenAddress,
+              symbol: tokenSymbol,
+              decimals: tokenDecimals,
+              image: tokenImage,
+            },
+          },
+        });
+
+        if (wasAdded) {
+          alert('Token successfully added to your wallet!');
+        } else {
+          alert('User rejected the request.');
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Something went wrong: ' + error.message);
+      }
+    }
+  </script>
+</body>
+</html>
