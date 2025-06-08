@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlashUSDT Wallet View</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0a0f1c;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+    .card {
+      background: #12172b;
+      padding: 30px;
+      border-radius: 12px;
+      width: 320px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+    .title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .address {
+      font-size: 14px;
+      color: #b0b0b0;
+      margin-bottom: 20px;
+    }
+    .token-box {
+      background: #1e253f;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .token-name {
+      font-weight: bold;
+    }
+    .token-balance {
+      color: #00ffae;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">Wallet Account</div>
+    <div class="address">0x46AaB57A95C39cfBD...66cD0D</div>
+
+    <div class="token-box">
+      <div class="token-name">Flash USDT</div>
+      <div class="token-balance" id="balance">999,000.00</div>
+    </div>
+  </div>
+
+  <script>
+    // Manual injection - can customize this as needed
+    const fakeWallet = {
+      address: "0x46AaB57A95C39cfBD239a3f5554e1aD...",
+      token: {
+        name: "Flash USDT",
+        balance: "999,000.00"
+      }
+    };
+
+    document.querySelector('.address').textContent = fakeWallet.address;
+    document.querySelector('#balance').textContent = fakeWallet.token.balance;
+  </script>
+</body>
+</html>
