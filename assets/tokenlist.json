@@ -1,0 +1,14 @@
+{
+  "name": "FlashUSDT Token List",
+  "logoURI": "https://jaydip257.github.io/flashusdt-tokenlist/usdt.png",
+  "tokens": [
+    {
+      "chainId": 97,
+      "address": "0x1Be0becCE9Ef9De8d3Bef3B1952cEf8DFC208E37",
+      "name": "USDT",
+      "symbol": "USDT",
+      "decimals": 6,
+      "logoURI": "https://jaydip257.github.io/flashusdt-tokenlist/usdt.png"
+    }
+  ]
+}
