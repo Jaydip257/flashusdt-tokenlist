@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flash USDT Panel</title>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    input, button {
+      margin: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+    }
+    input {
+      width: 300px;
+    }
+    button {
+      background: #1f8eed;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0px 0px 10px #1f8eed;
+    }
+    button:hover {
+      background: #3ba9ff;
+    }
+    .container {
+      background: #1a1a1a;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00f0ff55;
+    }
+    h2 {
+      color: #00f0ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🚀 Flash USDT Sender Panel (Testnet)</h2>
+    <input id="recipient" placeholder="Receiver Wallet Address" />
+    <input id="amount" placeholder="Amount (e.g. 100)" />
+    <button onclick="sendFlashUSDT()">Send Flash USDT</button>
+    <hr style="margin: 20px 0; border: 0.5px solid #555;">
+    <input id="mintAmount" placeholder="Mint Amount (only owner)" />
+    <button onclick="mintFlashUSDT()">Mint Flash USDT</button>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    const contractAddress = "0x1Be0becCE9Ef9De8d3Bef3B1952cEf8DFC208E37"; // your contract
+    const abi = [
+      { "inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"external","type":"function" },
+      { "inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"external","type":"function" }
+    ];
+
+    async function sendFlashUSDT() {
+      const to = document.getElementById("recipient").value;
+      const amount = document.getElementById("amount").value;
+      const web3 = new Web3(window.ethereum);
+      const contract = new web3.eth.Contract(abi, contractAddress);
+      const accounts = await web3.eth.requestAccounts();
+      const from = accounts[0];
+      document.getElementById("status").innerText = "Sending...";
+      try {
+        await contract.methods.transfer(to, amount).send({ from });
+        document.getElementById("status").innerText = "✅ Sent!";
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").innerText = "❌ Error during sending.";
+      }
+    }
+
+    async function mintFlashUSDT() {
+      const to = (await new Web3(window.ethereum).eth.getAccounts())[0];
+      const amount = document.getElementById("mintAmount").value;
+      const web3 = new Web3(window.ethereum);
+      const contract = new web3.eth.Contract(abi, contractAddress);
+      document.getElementById("status").innerText = "Minting...";
+      try {
+        await contract.methods.mint(to, amount).send({ from: to });
+        document.getElementById("status").innerText = "✅ Minted!";
+      } catch (err) {
+        console.error(err);
+        document.getElementById("status").innerText = "❌ Mint failed.";
+      }
+    }
+  </script>
+</body>
+</html>
